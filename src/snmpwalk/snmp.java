@@ -35,11 +35,8 @@ public class snmp {
 	/**
 	 * 创建对象communityTarget
 	 *
-	 * @param targetAddress
+	 * @param ip
 	 * @param community
-	 * @param version
-	 * @param timeOut
-	 * @param retry
 	 * @return CommunityTarget
 	 */
 	public static CommunityTarget createDefault(String ip, String community) {
@@ -58,7 +55,8 @@ public class snmp {
 	 *
 	 * @param ip
 	 * @param community
-	 * @param oid
+	 * @param group
+	 * @param identifier
 	 */
 	public static void snmpAsynWalk(String ip, String community, Map<String, FDB> group, int identifier) {
 		final CommunityTarget target = createDefault(ip, community);
@@ -128,7 +126,6 @@ public class snmp {
 						e.printStackTrace();
 						latch.countDown();
 					}
-
 				}
 			};
 
@@ -194,7 +191,7 @@ public class snmp {
 		printResult(group);
 	}
 	
-	private static String readDataFromConsole() {  
+	private static String readDataFromConsole() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));  
         String str = null;  
         try {  
@@ -202,13 +199,16 @@ public class snmp {
             System.out.println("example：snmpwalk -c broadapublic -v2c 10.1.1.51");
             System.out.println("======================>");
             str = br.readLine();  
-  
         } catch (IOException e) {
             e.printStackTrace();  
         }  
         return str;  
     }
 	
+	/**
+	 * 主方法
+	 * @param group
+	 */
 	private static void printResult(Map<String, FDB> group) {  
 		System.out.println("Total records = " + group.size());
 		System.out.println("===========iso======================mac==========port=");
